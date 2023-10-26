@@ -71,8 +71,13 @@ public class Client{
         playButton.addActionListener(new ActionListener() { //para atrapar los eventos que genere el boton cuando se pulse.
             @Override
             public void actionPerformed(ActionEvent e) {
-                mediaPlayerComponent.getMediaPlayer().playMedia("./movie.mp4");
-                mediaPlayerComponent.getMediaPlayer().play();
+                //"rtp//://@127.0.0.1:5004"
+                mediaPlayerComponent.getMediaPlayer().playMedia("movie.mp4");
+                System.out.println("Playing");
+                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == true){
+                    System.out.println("Paused video");
+                    mediaPlayerComponent.getMediaPlayer().play();
+                }
             }
         });
         
@@ -84,6 +89,7 @@ public class Client{
             @Override
             public void actionPerformed(ActionEvent e) {
                 mediaPlayerComponent.getMediaPlayer().pause();
+                System.out.println("Video pausado = " + mediaPlayerComponent.getMediaPlayer().isPlaying());
             }
         });
         
