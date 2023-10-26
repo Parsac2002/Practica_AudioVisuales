@@ -74,7 +74,7 @@ public class Client{
                 //"rtp//://@127.0.0.1:5004"
                 // si no reproducimos nada, el método "isPlaying()" devuelve siempre false.
                 if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
-                    mediaPlayerComponent.getMediaPlayer().playMedia("rtp://@239.0.0.2:5004");
+                    mediaPlayerComponent.getMediaPlayer().playMedia("rtp://@127.0.0.1:5004");
                     mediaPlayerComponent.getMediaPlayer().play();
                     System.out.println("Playing");
                     
