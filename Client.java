@@ -72,12 +72,19 @@ public class Client{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //"rtp//://@127.0.0.1:5004"
-                mediaPlayerComponent.getMediaPlayer().playMedia("movie.mp4");
-                System.out.println("Playing");
-                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == true){
-                    System.out.println("Paused video");
+                // si no reproducimos nada, el método "isPlaying()" devuelve siempre false.
+                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
                     mediaPlayerComponent.getMediaPlayer().play();
-                }
+                    mediaPlayerComponent.getMediaPlayer().playMedia("movie.mp4");
+                    System.out.println("Playing");
+                    
+                }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+
+                
+                // if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
+                //     System.out.println("Paused video");
+                //     mediaPlayerComponent.getMediaPlayer().play();
+                // }
             }
         });
         
