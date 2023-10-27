@@ -52,13 +52,29 @@ public class Client{
         JPanel contentPane = new JPanel();//panel nuevo
         contentPane.setLayout(new BorderLayout());
         //to create a media player, the simplest is to use an instance of an
-
         //EmbeddedMediaPlayerComponent
+
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
         
         JPanel controlsPane = new JPanel();//nuevo panel de control (para los botones)
+        //----------------------------------------------------------------------------------------
+        //P2:
+        //definition of the URL panel inside the same frame:
         
+        JPanel urlPane = new JPanel();//primero creamos un nuevo panel.
+        urlPane.setLayout(new BorderLayout());
+        contentPane.add(urlPane, BorderLayout.NORTH);
+        //creamos campo de texto.
+        JTextField textField = new JTextField(65);
+        //textField.setBounds(0, 0, 500, 200);
+        urlPane.add(textField, BorderLayout.WEST);
+        //Definition of "go" button.
+        JButton goButton = new JButton("Go");//creamos nuevo boton
+        //goButton.setBounds(700, 0, 100, 100);
+        urlPane.add(goButton, BorderLayout.EAST);//lo ponemos en el panel de control
+        //----------------------------------------------------------------------------------------
+
         //Definition of PLAY button
         
         //----------------------
