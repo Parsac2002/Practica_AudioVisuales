@@ -61,7 +61,7 @@ public class Client{
         //----------------------------------------------------------------------------------------
         //P2:
         //definition of the URL panel inside the same frame:
-        
+        //Content pane y dentro de content pane : NORTH -> urlpane y SOUTH -> constrolspane.
         JPanel urlPane = new JPanel();//primero creamos un nuevo panel.
         urlPane.setLayout(new BorderLayout());
         contentPane.add(urlPane, BorderLayout.NORTH);
@@ -69,10 +69,56 @@ public class Client{
         JTextField textField = new JTextField(65);
         //textField.setBounds(0, 0, 500, 200);
         urlPane.add(textField, BorderLayout.WEST);
+        //----------------------------------------------------------------------------------------
+        //Mostramos la pagina HTML con la URL:
+        //Crearemos un "editor Pane"
+        JEditorPane html_page = new JEditorPane();
+        html_page.setEditable(false); //no vamos a editar la pagina web que mostramos.
+
+        //argumento "false" para que no se genere un evento de edicion.
+        
+
+        //Go Button:
         //Definition of "go" button.
+
         JButton goButton = new JButton("Go");//creamos nuevo boton
-        //goButton.setBounds(700, 0, 100, 100);
         urlPane.add(goButton, BorderLayout.EAST);//lo ponemos en el panel de control
+        goButton.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){ //si hay contenido reproduciendose, no deja salir de la pantalla.
+                    try{
+                        URL url = new URL(textField.getText());
+                        //formato de URL para tener mas control sobre el formato de esta cadena de texto.
+                        if(url != null){
+                            html_page.setPage(url);
+                            //contentPane.setVisible(false);
+                             
+                             JScrollPane scrollPane = new JScrollPane(html_page);
+                             contentPane.removeAll();
+                             contentPane.add(scrollPane);
+                             //refrescamos el panel
+                             contentPane.revalidate();
+                             contentPane.repaint();
+                             //lo hacemos visible de nuevo.
+                             contentPane.setVisible(true); 
+                            
+                             //Sin scroll:
+                            //  contentPane.removeAll();
+                            //  contentPane.add(html_page);
+                            //  contentPane.revalidate();
+                            //  contentPane.repaint();
+                            //  contentPane.setVisible(true);
+                             
+                        }
+                    }catch(Exception url_exception){
+                        System.out.println("Exception with URL, go button : " + url_exception);
+                    }
+
+                }
+            }
+        });
+
         //----------------------------------------------------------------------------------------
 
         //Definition of PLAY button
@@ -89,12 +135,18 @@ public class Client{
             public void actionPerformed(ActionEvent e) {
                 //"rtp//://@127.0.0.1:5004"
                 // si no reproducimos nada, el método "isPlaying()" devuelve siempre false.
-                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
-                    mediaPlayerComponent.getMediaPlayer().playMedia("rtp://@127.0.0.1:5004");
-                    mediaPlayerComponent.getMediaPlayer().play();
-                    System.out.println("Playing");
+                
+                    String video_url = textField.getText();
+                    if(video_url !=null){
+                        if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
+                            mediaPlayerComponent.getMediaPlayer().playMedia(video_url);
+                            mediaPlayerComponent.getMediaPlayer().play();
+                            System.out.println("Playing");
+                            
+                        }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+                    }
                     
-                }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+                
 
                 
                 // if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
@@ -129,6 +181,8 @@ public class Client{
             }
         });
         
+        
+
         //Makes visible the window
         frame.setContentPane(contentPane);
         frame.setVisible(true);
