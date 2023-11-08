@@ -14,6 +14,8 @@ public class Client{
     private final JFrame frame;
     
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    private JScrollPane scrollPane;
+    private Boolean in_url = false;
     
     public static void main(final String[] args) {
         new NativeDiscovery().discover();//busca los binarios de vlc que tienes en tu sistema.
@@ -74,7 +76,7 @@ public class Client{
         //Crearemos un "editor Pane"
         JEditorPane html_page = new JEditorPane();
         html_page.setEditable(false); //no vamos a editar la pagina web que mostramos.
-
+        //JScrollPane scrollPane = new JScrollPane();
         //argumento "false" para que no se genere un evento de edicion.
         
 
@@ -86,6 +88,7 @@ public class Client{
         goButton.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
+                in_url = true;
                 if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){ //si hay contenido reproduciendose, no deja salir de la pantalla.
                     try{
                         URL url = new URL(textField.getText());
@@ -94,22 +97,21 @@ public class Client{
                             html_page.setPage(url);
                             //contentPane.setVisible(false);
                              
-                             JScrollPane scrollPane = new JScrollPane(html_page);
-                             contentPane.removeAll();
-                             contentPane.add(scrollPane);
-                             //refrescamos el panel
-                             contentPane.revalidate();
-                             contentPane.repaint();
-                             //lo hacemos visible de nuevo.
-                             contentPane.setVisible(true); 
+                            scrollPane = new JScrollPane(html_page);
+                            contentPane.remove(mediaPlayerComponent);
+                            contentPane.add(scrollPane, BorderLayout.CENTER);
+                            //refrescamos el panel
+                            contentPane.revalidate();
+                            contentPane.repaint();
+                            //lo hacemos visible de nuevo.
+                            contentPane.setVisible(true); 
                             
-                             //Sin scroll:
+                            //Sin scroll:
                             //  contentPane.removeAll();
                             //  contentPane.add(html_page);
                             //  contentPane.revalidate();
                             //  contentPane.repaint();
-                            //  contentPane.setVisible(true);
-                             
+                            //  contentPane.setVisible(true); 
                         }
                     }catch(Exception url_exception){
                         System.out.println("Exception with URL, go button : " + url_exception);
@@ -138,6 +140,16 @@ public class Client{
                 
                     String video_url = textField.getText();
                     if(video_url !=null){
+                        if(in_url == true){
+                            contentPane.remove(scrollPane);
+                            contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
+                            //refrescamos el panel
+                            contentPane.revalidate();
+                            contentPane.repaint();
+                            //lo hacemos visible de nuevo.
+                            contentPane.setVisible(true);
+                            in_url = false;  
+                        }
                         if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
                             mediaPlayerComponent.getMediaPlayer().playMedia(video_url);
                             mediaPlayerComponent.getMediaPlayer().play();
