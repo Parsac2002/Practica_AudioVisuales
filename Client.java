@@ -16,6 +16,7 @@ public class Client{
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
     private JScrollPane scrollPane;
     private Boolean in_url = false;
+    private Boolean in_video = false;
     
     public static void main(final String[] args) {
         new NativeDiscovery().discover();//busca los binarios de vlc que tienes en tu sistema.
@@ -89,6 +90,7 @@ public class Client{
             @Override
             public void actionPerformed(ActionEvent e) {
                 in_url = true;
+                in_video = false;
                 if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){ //si hay contenido reproduciendose, no deja salir de la pantalla.
                     try{
                         URL url = new URL(textField.getText());
@@ -149,13 +151,20 @@ public class Client{
                             //lo hacemos visible de nuevo.
                             contentPane.setVisible(true);
                             in_url = false;  
+                            in_video = false;//Solamente la 1a vez que cambiamos de la web al video.
                         }
-                        if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
-                            mediaPlayerComponent.getMediaPlayer().playMedia(video_url);
+                        if(in_video == false){
+                            if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
+                                mediaPlayerComponent.getMediaPlayer().playMedia(video_url);
+                                System.out.println("Playing");
+                                in_video = true;
+                                
+                            }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+                        }else{
                             mediaPlayerComponent.getMediaPlayer().play();
-                            System.out.println("Playing");
-                            
-                        }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+                            System.out.println("Playing after pausing");
+                            System.out.println("in_video = " + in_video);
+                        }
                     }
                     
                 
@@ -175,8 +184,12 @@ public class Client{
         pauseButton.addActionListener(new ActionListener() { //para atrapar los eventos que genere el boton cuando se pulse.
             @Override
             public void actionPerformed(ActionEvent e) {
-                mediaPlayerComponent.getMediaPlayer().pause();
-                System.out.println("Video pausado = " + mediaPlayerComponent.getMediaPlayer().isPlaying());
+                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == true){
+                    mediaPlayerComponent.getMediaPlayer().pause();
+                    System.out.println("Video pausado = " + mediaPlayerComponent.getMediaPlayer().isPlaying());
+                }
+            
+
             }
         });
         
@@ -190,6 +203,7 @@ public class Client{
             @Override
             public void actionPerformed(ActionEvent e) {
                 mediaPlayerComponent.getMediaPlayer().stop();
+                in_video = false;//para que vuelva a pedir el video desde 0
             }
         });
         
