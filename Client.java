@@ -89,13 +89,14 @@ public class Client{
         goButton.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
-                in_url = true;
                 in_video = false;
                 if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){ //si hay contenido reproduciendose, no deja salir de la pantalla.
                     try{
                         URL url = new URL(textField.getText());
                         //formato de URL para tener mas control sobre el formato de esta cadena de texto.
-                        if(url != null){
+                        
+                        if(url != null && !(isVideoUrl(url))){//si la URL es valida y no es un fichero de video al que se quiere acceder.
+                            in_url = true;//Aqui dentro para que si le doy al play no quite el Scrollpanel que no existe y me de un NullPointerException.
                             html_page.setPage(url);
                             //contentPane.setVisible(false);
                              
@@ -214,6 +215,12 @@ public class Client{
         frame.setVisible(true);
         
         
+    }
+    //returns true if it is a video.
+    public static boolean isVideoUrl(URL url) {
+        String file = url.getFile().toLowerCase();
+        return file.endsWith(".mp4") || file.endsWith(".mkv") || file.endsWith(".flv") ||
+               file.endsWith(".avi") || file.endsWith(".mov") || file.endsWith(".wmv");
     }
     
 }
