@@ -140,31 +140,39 @@ public class Client{
             public void actionPerformed(ActionEvent e) {
                 //"rtp//://@127.0.0.1:5004"
                 // si no reproducimos nada, el método "isPlaying()" devuelve siempre false.
+                String video_url_str = textField.getText();
                 
-                    String video_url = textField.getText();
-                    if(video_url !=null){
-                        if(in_url == true){
-                            contentPane.remove(scrollPane);
-                            contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
-                            //refrescamos el panel
-                            contentPane.revalidate();
-                            contentPane.repaint();
-                            //lo hacemos visible de nuevo.
-                            contentPane.setVisible(true);
-                            in_url = false;  
-                            in_video = false;//Solamente la 1a vez que cambiamos de la web al video.
-                        }
-                        if(in_video == false){
-                            if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
-                                mediaPlayerComponent.getMediaPlayer().playMedia(video_url);
-                                System.out.println("Playing");
-                                in_video = true;
-                                
-                            }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
-                        }else{
-                            mediaPlayerComponent.getMediaPlayer().play();
-                            System.out.println("Playing after pausing");
-                            System.out.println("in_video = " + in_video);
+                if(video_url_str !=null){
+                        try{
+                            URL video_url =  new URL(video_url_str);
+                            if(in_url == true && isVideoUrl(video_url)){
+                                //para que si no es un video, no se refresque la disposicion de nuestro panel.
+                                contentPane.remove(scrollPane);
+                                contentPane.add(mediaPlayerComponent, BorderLayout.CENTER);
+                                //refrescamos el panel
+                                contentPane.revalidate();
+                                contentPane.repaint();
+                                //lo hacemos visible de nuevo.
+                                contentPane.setVisible(true);
+                                in_url = false;  
+                                in_video = false;//Solamente la 1a vez que cambiamos de la web al video.
+                            }
+                            if(in_video == false && isVideoUrl(video_url)){
+                                if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){
+                                    mediaPlayerComponent.getMediaPlayer().playMedia(video_url_str);
+                                    System.out.println("Playing");
+                                    in_video = true;
+                                    
+                                }// si quito este "if" cuando le de a Play y ya estabamos viendo el video, no empieza desde el principio.
+                            }else{
+                                //se olvida de la URL y reanuda lo que ya se estaba viendo.
+                                mediaPlayerComponent.getMediaPlayer().play();
+                                System.out.println("Playing after pausing");
+                                System.out.println("in_video = " + in_video);
+                            }
+
+                        } catch (Exception play_url_exception) {
+                            System.out.println("Exception in URL while trying to play it: " + play_url_exception);
                         }
                     }
                     
