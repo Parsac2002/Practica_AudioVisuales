@@ -220,8 +220,10 @@ public class Client{
         stopButton.addActionListener(new ActionListener() { //para atrapar los eventos que genere el boton cuando se pulse.
             @Override
             public void actionPerformed(ActionEvent e) {
-                mediaPlayerComponent.getMediaPlayer().stop();
-                in_video = false;//para que vuelva a pedir el video desde 0
+                if(in_video == true){
+                    mediaPlayerComponent.getMediaPlayer().stop();
+                    in_video = false;//para que vuelva a pedir el video desde 0
+                }
             }
         });
         
