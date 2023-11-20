@@ -97,16 +97,20 @@ public class Client{
                         //formato de URL para tener mas control sobre el formato de esta cadena de texto.
                         
                         if(url != null && !(isVideoUrl(url))){//si la URL es valida y no es un fichero de video al que se quiere acceder.
-                            in_url = true;//Aqui dentro para que si le doy al play no quite el Scrollpanel que no existe y me de un NullPointerException.
                             html_page.setPage(url);
                             //contentPane.setVisible(false);
-                             
+                            
                             scrollPane = new JScrollPane(html_page);
-                            // if(in_url == false){
-                            // }
-                            contentPane.remove(mediaPlayerComponent);
+                            System.out.println("in_url = " + in_url);
+                            if(in_url == false){//ya si entra 1 vez, se pone a true y no intenta eliminar el video que no hay.
+                                in_url = true;//Aqui dentro para que si le doy al play no quite el Scrollpanel que no existe y me de un NullPointerException.
+                                contentPane.remove(mediaPlayerComponent);
+                                //Solamente si estamos de nuevas quitamos el mediaPlayerComponent.
+                            }else{
+                                System.out.println("Removing URL Pane...");
+                                contentPane.remove(scrollPane);
+                            }
                             contentPane.add(scrollPane, BorderLayout.CENTER);
-                            //Solamente si estamos de nuevas quitamos el mediaPlayerComponent.
                             //refrescamos el panel
                             contentPane.revalidate();
                             contentPane.repaint();
