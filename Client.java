@@ -90,6 +90,7 @@ public class Client{
             @Override
             public void actionPerformed(ActionEvent e) {
                 in_video = false;
+                
                 if(mediaPlayerComponent.getMediaPlayer().isPlaying() == false){ //si hay contenido reproduciendose, no deja salir de la pantalla.
                     try{
                         URL url = new URL(textField.getText());
@@ -101,8 +102,11 @@ public class Client{
                             //contentPane.setVisible(false);
                              
                             scrollPane = new JScrollPane(html_page);
+                            // if(in_url == false){
+                            // }
                             contentPane.remove(mediaPlayerComponent);
                             contentPane.add(scrollPane, BorderLayout.CENTER);
+                            //Solamente si estamos de nuevas quitamos el mediaPlayerComponent.
                             //refrescamos el panel
                             contentPane.revalidate();
                             contentPane.repaint();
