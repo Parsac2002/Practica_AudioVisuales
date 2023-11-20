@@ -105,12 +105,13 @@ public class Client{
                             if(in_url == false){//ya si entra 1 vez, se pone a true y no intenta eliminar el video que no hay.
                                 in_url = true;//Aqui dentro para que si le doy al play no quite el Scrollpanel que no existe y me de un NullPointerException.
                                 contentPane.remove(mediaPlayerComponent);
+                                contentPane.add(scrollPane, BorderLayout.CENTER);
                                 //Solamente si estamos de nuevas quitamos el mediaPlayerComponent.
-                            }else{
-                                System.out.println("Removing URL Pane...");
-                                contentPane.remove(scrollPane);
                             }
-                            contentPane.add(scrollPane, BorderLayout.CENTER);
+                            //else{
+                            //     System.out.println("Removing URL Pane...");
+                            //     contentPane.remove(scrollPane);
+                            // }
                             //refrescamos el panel
                             contentPane.revalidate();
                             contentPane.repaint();
