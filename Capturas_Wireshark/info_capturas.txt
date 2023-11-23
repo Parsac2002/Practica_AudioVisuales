@@ -1,0 +1,25 @@
+ip del servidor : vm-images.netcom.it.uc3m.es = 163.117.61.51, p_or = 443 (https) y p_dst = 53806.
+Configuracion Servidor Apache:
+- 1. creo el directorio html_Aud en /var/www/
+- 2.No sé qué index.html ponerle.
+- 3.He cambiado el fichero de configuración, está en :
+ /etc/apache2/sites-available/ y se llama Aud.conf , y le he puesto un 
+ ServerName: server.practicaAudiovisuales.es y el DocumentRoot en 
+ /var/www/html_Aud
+
+- 4.En el directorio "/etc/apache2/sites-available/", ejecuto el comando:
+ "sudo a2ensite Aud.conf".
+
+- 5.Para activar la nueva configuración de apache -> "systemctl reload apache2"
+
+- 6. Para cargar la web nueva, "service apache2 reload"
+
+- 7. Cambiado el archivo /etc/dnsmasq.conf, he puesto :
+	address=/video-server/127.0.0.1
+	address=/video-catalogue/127.0.0.1
+
+- 8. Añadido Listen 8080 al fichero ports.conf en /etc/apache2, para que escuche el server a ese puerto. 
+- 9. Comandos para encender y apagar apache2: 
+	"sudo a2dissite Aud.conf" y "sudo systemctl stop apache2". 
+	Luego, "sudo systemctl start apache2" y "sudo a2ensite Aud.conf".
+
