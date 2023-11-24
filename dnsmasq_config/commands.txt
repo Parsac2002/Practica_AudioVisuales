@@ -1,0 +1,8 @@
+dns-server: 
+/home/parsac/AudioVisuales/Practica_AudioVisuales/dnsmasq_config/dns_server_config.sh
+client:
+/home/parsac/AudioVisuales/Practica_AudioVisuales/dnsmasq_config/client_config.sh
+catalogue-server:
+/home/parsac/AudioVisuales/Practica_AudioVisuales/dnsmasq_config/catalogue-server_config.sh
+video-server:
+/home/parsac/AudioVisuales/Practica_AudioVisuales/dnsmasq_config/video-server_config.sh
