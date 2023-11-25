@@ -1,0 +1,97 @@
+Static Routes
+
+router1
+ip ro add 10.0.1.0/24 via 10.0.5.1 dev eth2
+ip ro add 10.0.2.0/24 via 10.0.3.2 dev eth1
+ip ro add 10.0.4.0/24 via 10.0.5.1 dev eth2
+
+router2
+ip ro add 10.0.0.0/24 via 10.0.5.2 dev eth2
+ip ro add 10.0.2.0/24 via 10.0.4.2 dev eth1
+ip ro add 10.0.3.0/24 via 10.0.4.2 dev eth1
+
+router3
+ip ro add 10.0.1.0/24 via 10.0.4.1 dev eth2
+ip ro add 10.0.0.0/24 via 10.0.3.1 dev eth1
+ip ro add 10.0.5.0/24 via 10.0.3.1 dev eth1
+
+
+
+DNSSsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+DNS-server
+
+touch /etc/dnsmasq.d/hosts
+
+echo '127.0.0.1 localhost
+10.0.1.10 catalogue-server
+10.0.2.20 video-server
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters' >> /etc/dnsmasq.d/hosts
+
+touch /etc/dnsmasq.d/resolv.conf
+ 
+echo 'nameserver 127.0.0.1' >> /etc/dnsmasq.d/resolv.conf
+
+touch /etc/dnsmasq.d/dnsmasq.conf
+
+echo 'no-resolv
+server=127.0.0.1
+addn-hosts=/etc/dnsmasq.d/hosts
+resolv-file=/etc/dnsmasq.d/resolv.conf' >> /etc/dnsmasq.d/dnsmasq.conf
+
+killall	 dnsmasq
+/usr/sbin/dnsmasq -C /etc/dnsmasq.d/dnsmasq.conf
+
+
+
+Client
+
+touch /etc/dnsmasq.d/resolv.conf
+ 
+echo 'nameserver 10.0.0.10' >> /etc/dnsmasq.d/resolv.conf
+
+touch /etc/dnsmasq.d/dnsmasq.conf
+
+echo 'resolv-file=/etc/dnsmasq.d/resolv.conf' >> /etc/dnsmasq.d/dnsmasq.conf
+
+killall  dnsmasq
+/usr/sbin/dnsmasq -C /etc/dnsmasq.d/dnsmasq.conf
+
+
+HTTTPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP
+catalogue-server
+
+cp /home/ubu/Documents/SA_lab/index.html /var/www/index.html
+cp /home/ubu/Documents/SA_lab/assets/* /var/www
+sudo service apache2 restart
+
+cp /home/labit/Desktop/SA_lab/index.html /var/www/index.html
+cp /home/labit/Desktop/SA_lab/assets/* /var/www
+sudo service apache2 restart
+
+video-server
+
+cp /home/ubu/Documents/SA_lab/Videos/* /var/www/
+sudo service apache2 restart
+
+cp /home/labit/Desktop/SA_lab/Videos/* /var/www/
+sudo service apache2 restart
+
+            Client
+                    wget http://catalogue-server
+                    wget http://video-server/movie.mp4
+                    wget http://video-server/dw11222.mp4
+
+
+JAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+export DISPLAY=:1
+sudo -u ubu wireshark &
+
+su ubu
+export DISPLAY=:1
+sa
+./compile.sh
