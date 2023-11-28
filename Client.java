@@ -77,6 +77,7 @@ public class Client{
         //Crearemos un "editor Pane"
         JEditorPane html_page = new JEditorPane();
         html_page.setEditable(false); //no vamos a editar la pagina web que mostramos.
+        html_page.setContentType("text/html");
         //JScrollPane scrollPane = new JScrollPane();
         //argumento "false" para que no se genere un evento de edicion.
         
@@ -97,21 +98,22 @@ public class Client{
                         //formato de URL para tener mas control sobre el formato de esta cadena de texto.
                         
                         if(url != null && !(isVideoUrl(url))){//si la URL es valida y no es un fichero de video al que se quiere acceder.
-                            html_page.setPage(url);
-                            //contentPane.setVisible(false);
-                            
-                            scrollPane = new JScrollPane(html_page);
                             System.out.println("in_url = " + in_url);
                             if(in_url == false){//ya si entra 1 vez, se pone a true y no intenta eliminar el video que no hay.
+                                html_page.setPage(url);
+                                //contentPane.setVisible(false);
+                                
+                                scrollPane = new JScrollPane(html_page);
                                 in_url = true;//Aqui dentro para que si le doy al play no quite el Scrollpanel que no existe y me de un NullPointerException.
                                 contentPane.remove(mediaPlayerComponent);
                                 contentPane.add(scrollPane, BorderLayout.CENTER);
                                 //Solamente si estamos de nuevas quitamos el mediaPlayerComponent.
+                            }else{
+                                System.out.println("Removing URL Pane...");
+                                html_page.setPage(url);
+                                //contentPane.remove(scrollPane);
+                                //contentPane.add(scrollPane);
                             }
-                            //else{
-                            //     System.out.println("Removing URL Pane...");
-                            //     contentPane.remove(scrollPane);
-                            // }
                             //refrescamos el panel
                             contentPane.revalidate();
                             contentPane.repaint();
@@ -241,6 +243,21 @@ public class Client{
         return file.endsWith(".mp4") || file.endsWith(".mkv") || file.endsWith(".flv") ||
                file.endsWith(".avi") || file.endsWith(".mov") || file.endsWith(".wmv");
     }
+
+    // private int containsEmbeddedMediaPlayerComponentOrJEditorPane(JPanel contentPane) {
+    //     for (Component component : contentPane.getComponents()) {
+    //         if (component instanceof EmbeddedMediaPlayerComponent) {
+    //             return 1;
+    //         } else if (component instanceof JEditorPane) {
+    //             return 2;
+    //         }
+    //     }
+    //     return 3;
+        
+    // }
+
+    
+    
     
 }
 
